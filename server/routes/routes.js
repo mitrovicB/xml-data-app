@@ -1,25 +1,21 @@
-//const parser = require('xml2json'),
     const fs = require('fs');
     parseString = require('xml2js').parseString;
-
-    /*const newObj = {
-        firstName: user.first_name,
-        lastName: user.last_name,
-        address: user.address,
-        city: user.city,
-        country: user[country],
-        email: user.email,
-    }*/
 
 module.exports = app => {
     // Create a User
     app.post("/register", (req, res) => {
-        console.log('signup function')
-        if (!req.body) {
-            res.status(400).send({
-              message: "Content can not be empty!"
-            });
-          }
+        console.log(req.body);
+        // Create User
+        const newUser = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            address: req.body.address,
+            city: req.body.city,
+            country: req.body.country,
+            email: req.body.email,
+            password : req.body.password
+        };
+        console.log(newUser);
     })
   
     // Get all users
@@ -61,32 +57,3 @@ module.exports = app => {
         console.log('delete function');
     })
 }
-
-/**
-    parseString(data, function (err, result) {
-        const json = JSON.stringify(result, null, 4);
-        const el = JSON.parse(json);
-        const continents = el.data.continent;
-
-        continents.forEach(continent => {
-            console.log(continent.$.name);
-            let countryes = continent.country;
-
-            countryes.forEach(country => {
-                console.log(country.$.name);
-                let users = country.user;
-
-                users.forEach(user => {
-                    console.log('First name ' + user.first_name + ' Last name ' + user.last_name +
-                        ' Address ' + user.address + ' City ' + user.city + ' Email ' + user.email +
-                        ' Password ' + user.password);
-                    console.log('\n');
-                })
-            })
-        });
-    });
-});
-Write to Bojan Todorovic
-Aa
-
- */

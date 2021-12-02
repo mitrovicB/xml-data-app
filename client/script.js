@@ -4,7 +4,7 @@ registerBtn.addEventListener('click', () => {
   }
 );
 
-loadXMLDoc(getUsers, "GET", "users");
+// loadXMLDoc(getUsers, "GET", "users");
 
 function deleteUser() {
   console.log('delete user');
@@ -36,11 +36,13 @@ function saveUserInfo() {
       showError("Password must be at least 8 characters long!");
       return;
   }
-  
+
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-      if (this.readyState==4 && this.status==200) {
+      if (this.readyState == 4 && this.status == 200) {
           console.log(xhttp.responseText);
+      } else if (this.status == 400) {
+        return showError('You must fill all fields!');
       }
   };
 
