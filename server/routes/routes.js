@@ -27,8 +27,10 @@ module.exports = app => {
             console.dir(result['data']['continent'][0])
             /** U ovom dijelu sam zaglavila, 
              * trebam izvuci sve korisnike  */
-            allusers = result['data']['continent'];
-          
+             continents = result['data']['continent'];
+             for (let i = 0; i < continents.length; i++) {
+                 console.log(continents[i]);
+             }          
             });
             res.send(allusers);
         });
