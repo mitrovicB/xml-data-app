@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src * 'self' data:">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Web app</title>
+</head>
+<body>
+  <div id="user-form">
+    <input type="text" name="first_name" placeholder="first name" />
+    <input type="text" name="last_name" placeholder="last name" />
+    <input type="text" name="address" placeholder="address" />
+    <input type="text" name="city" placeholder="city" />
+    <select name="countries" id="countries">
+      <option value="United States">United States</option>
+      <option value="Canada">Canada</option>
+      <option value="United Kingdom">United Kingdom</option>
+      <option value="France">France</option>
+      <option value="Germany">Germany</option>
+      <option value="China">China</option>
+      <option value="Japan">Japan</option>
+    </select> 
+    <input type="text" name="email" placeholder="email address" />
+    <input type="text" name="password" placeholder="password" />
+    <button type="button" id="register">Register</button>
+  </div>
+<p id="demo"></p>
+    <div id="table">
+        <table>
+            <tr>
+              <th>Full name</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>Country</th>
+              <th>E-mail</th>
+              <th>Action</th>
+            </tr>
+          </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
