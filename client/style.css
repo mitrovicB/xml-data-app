@@ -27,7 +27,7 @@ select {
   width: 300px;
 }
 
-button {
+button#register {
   margin-left: 100px;
   width: 100px;
 }
@@ -38,4 +38,10 @@ td {
   border: 1px solid rgba(0, 0, 0, 0.527);
   border-collapse: collapse;
   padding: 10px;
+}
+
+.delete-btn {
+  padding: 0;
+  border: none;
+  background: none;
 }

@@ -15,6 +15,11 @@ module.exports = app => {
     // Create a User
     app.post("/register", (req, res) => {
         console.log('signup function')
+        if (!req.body) {
+            res.status(400).send({
+              message: "Content can not be empty!"
+            });
+          }
     })
   
     // Get all users
