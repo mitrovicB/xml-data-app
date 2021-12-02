@@ -2,6 +2,14 @@
     const fs = require('fs');
     parseString = require('xml2js').parseString;
 
+    /*const newObj = {
+        firstName: user.first_name,
+        lastName: user.last_name,
+        address: user.address,
+        city: user.city,
+        country: user[country],
+        email: user.email,
+    }*/
 
 module.exports = app => {
     // Create a User
@@ -23,18 +31,21 @@ module.exports = app => {
                 let countries = continent.country;
 
                 countries.forEach(country => {
-                    console.log(country.$.name)
+                    console.log("country name: "+ country.$.name);
                     users = country.user;
-                    allUsers.push(users);
+
                     users.forEach(user => {
+                        user.country = country.$.name;
                         console.log('First name ' + user.first_name + ' Last name ' + user.last_name +
-                            ' Address ' + user.address + ' City ' + user.city + ' Email ' + user.email +
+                            ' Address ' + user.address + ' City ' + user.city + 'Country ' + user.country + ' Email ' + user.email +
                             ' Password ' + user.password);
                         console.log('\n');
+                
+                        allUsers.push(user);
                     });
                 });
             });
-            console.log(allUsers)
+            console.log(allUsers);
             res.send(allUsers);
             });
         });
