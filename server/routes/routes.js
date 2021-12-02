@@ -25,7 +25,10 @@ module.exports = app => {
         fs.readFile('./data.xml', function(err, data) {
             parser.parseString(data, function (err, result) {
             console.dir(result['data']['continent'][0])
+            /** U ovom dijelu sam zaglavila, 
+             * trebam izvuci sve korisnike  */
             allusers = result['data']['continent'];
+          
             });
             res.send(allusers);
         });
