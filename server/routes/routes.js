@@ -1,10 +1,22 @@
     const fs = require('fs');
     parseString = require('xml2js').parseString;
 
+const continentArr = {
+    "Europe": ["United Kingdom", "Germany", "France"],
+    "North America": ["United States", "Canada"],
+    "East Asia": ["China", "Japan"]
+}
+
+const createAttr = (attr) => {
+    console.log('attr', attr);
+    let newAtrr = 'country.$.name';
+    return newAtrr;
+}
+
 module.exports = app => {
     // Create a User
     app.post("/register", (req, res) => {
-        console.log(req.body);
+
         // Create User
         const newUser = {
             first_name: req.body.first_name,
@@ -16,6 +28,42 @@ module.exports = app => {
             password : req.body.password
         };
         console.log(newUser);
+
+        for (let key in continentArr) {
+            let obj = continentArr[key];
+            console.log(obj)
+            obj.forEach(country => {
+                console.log(country);
+                if (newUser.country === country) {
+                    createAttr(country);
+                }
+            // need to stop forEach when condition is met
+            });
+        }
+
+         /* for (let [key, value] of Object. entries(user)) {
+            if(value === '') {
+                res.status(400).send({
+                    message: "Content can not be empty!"
+                  });
+                  return;
+            }
+        }  */
+        fs.readFile( './data.xml', 'utf8', function(err, data) {
+            let allUsers = [];
+            parseString(data, function (err, result) {
+                const json = JSON.stringify(result, null, 4);
+                const el = JSON.parse(json);
+                const continents = el.data.continent;
+                console.log(continents);
+
+                continents.forEach(continent => {
+                console.log(continent.$.name);
+                let countries = continent.country;
+                console.log(countries);
+                })
+            })
+        })
     })
   
     // Get all users
