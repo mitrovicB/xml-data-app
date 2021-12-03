@@ -1,5 +1,6 @@
-    const fs = require('fs');
-    parseString = require('xml2js').parseString;
+const fs = require('fs'),
+    xml2js = require('xml2js'),
+    parseString = xml2js.parseString;
 
 const continentArr = {
     "Europe": ["United Kingdom", "Germany", "France"],
@@ -42,30 +43,33 @@ module.exports = app => {
         }
 
          /* for (let [key, value] of Object. entries(user)) {
-            if(value === '') {
-                res.status(400).send({
-                    message: "Content can not be empty!"
-                  });
-                  return;
-            }
-        }  */
-        fs.readFile( './data.xml', 'utf8', function(err, data) {
-            let allUsers = [];
-            parseString(data, function (err, result) {
-                const json = JSON.stringify(result, null, 4);
-                const el = JSON.parse(json);
-                const continents = el.data.continent;
-                console.log(continents);
+                if(value === '') {
+                    res.status(400).send({
+                        message: "Content can not be empty!"
+                    });
+                    return;
+                }
+            } */
 
+        fs.readFile('./data.xml', 'utf8', function(err, data) {
+            parseString(data, function (err, result) {
+            const json = JSON.stringify(result, null, 4);
+            const el = JSON.parse(json);
+            const continents = el.data.continent;
+            console.log(continents);
                 continents.forEach(continent => {
-                console.log(continent.$.name);
-                let countries = continent.country;
-                console.log(countries);
+                    console.log(continent.$.name);
+                    let countries = continent.country;
+                    countries.forEach(country => {
+                        console.log("country name: "+ country.$.name);
+                        users = country.user;
+                        console.log("users: ", users);
+                          
+                    })
                 })
             })
         })
     })
-  
     // Get all users
     app.get('/users', (req, res) => {
         let allUsers = [];
@@ -78,7 +82,7 @@ module.exports = app => {
             continents.forEach(continent => {
                 console.log(continent.$.name);
                 let countries = continent.country;
-
+                /////////////////////////////////
                 countries.forEach(country => {
                     console.log("country name: "+ country.$.name);
                     users = country.user;

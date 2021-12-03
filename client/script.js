@@ -3,6 +3,7 @@ registerBtn.addEventListener('click', () => {
   saveUserInfo();
   }
 );
+saveUserInfo();
 
 // loadXMLDoc(getUsers, "GET", "users");
 
