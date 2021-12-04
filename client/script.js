@@ -36,12 +36,17 @@ function saveUserInfo() {
   }
   if (user.password.length < 8) {
       showError("Password must be at least 8 characters long!");
-      return;book
+      return;
   }
 
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-    switch(this.status) {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+    }
+    /*
+    switch(this.readyState == 4 && this.status) {
+      /** This condition needs to be changed 
       case 200:
         console.log(xhttp.responseText);
         break;
@@ -52,8 +57,7 @@ function saveUserInfo() {
         showError('This email address is already in use!');
       break;
       default:
-        showError('Some error occured.')
-    }
+        showError('Some error occured.') */
   };
   xhttp.open("POST", "http://127.0.0.1:3000/register", true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
