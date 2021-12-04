@@ -40,6 +40,7 @@ module.exports = app => {
                     if (newUser.country === el) {
                         userContinent = continent;
                         console.log("user continent:", userContinent);
+                        
                     }
                 });
             }
@@ -67,9 +68,10 @@ module.exports = app => {
                                 console.log("new user goes here:", country.$.name);
                                 country.user.push(newUser);
                                 console.log(country);
+                                return;
                             } else {
-                                console.log("make new continent");
                                 console.log(continent.$.name);
+                                console.log('create user continent: ', userContinent)
                                 return;
                             }
                         }
