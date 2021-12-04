@@ -40,7 +40,7 @@ td {
   padding: 10px;
 }
 
-.delete-btn {
+#delete-btn {
   padding: 0;
   border: none;
   background: none;
