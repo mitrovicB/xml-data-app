@@ -1,47 +1,90 @@
- <data>
-	<continent name="Europe">
-		<country name="United Kingdom">
-			<!-- Users -->
-			<user>
-				<first_name>John</first_name>
-				<last_name>Smith</last_name>
-				<address>320 Regent Street</address>
-				<city>London</city>
-				<email>john.smith@gmail.com</email>
-				<password>skek3E5k</password>
-			</user>
-			<user>
-				<first_name>Michael</first_name>
-				<last_name>Smith</last_name>
-				<address>322 Regent Street</address>
-				<city>London</city>
-				<email>michael.smith@hotmail.com</email>
-				<password>gk3288skW</password>
-			</user>
-		</country>
-		<country name="Germany">
-			<!-- Users -->
-			<user>
-				<first_name>Max</first_name>
-				<last_name>Mustermann</last_name>
-				<address>Berlinerstrasse 7</address>
-				<city>Hamburg</city>
-				<email>mmustermann@yahoo.com</email>
-				<password>kdkei44229</password>
-			</user>
-		</country>
-	</continent>
-	<continent name="North America">
-		<country name="United States">
-			<!-- Users -->
-			<user>
-				<first_name>Julia</first_name>
-				<last_name>Johnson</last_name>
-				<address>300 Boylston Ave E</address>
-				<city>Seattle</city>
-				<email>julia.johnson@gmail.com</email>
-				<password>49dksSSe3</password>
-			</user>
-		</country>
-	</continent>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data>
+  <continent name="Europe">
+    <country name="United Kingdom">
+      <user>
+        <first_name>John</first_name>
+        <last_name>Smith</last_name>
+        <address>320 Regent Street</address>
+        <city>London</city>
+        <email>john.smith@gmail.com</email>
+        <password>skek3E5k</password>
+      </user>
+      <user>
+        <first_name>Michael</first_name>
+        <last_name>Smith</last_name>
+        <address>322 Regent Street</address>
+        <city>London</city>
+        <email>michael.smith@hotmail.com</email>
+        <password>gk3288skW</password>
+      </user>
+    </country>
+    <country name="Germany">
+      <user>
+        <first_name>Max</first_name>
+        <last_name>Mustermann</last_name>
+        <address>Berlinerstrasse 7</address>
+        <city>Hamburg</city>
+        <email>mmustermann@yahoo.com</email>
+        <password>kdkei44229</password>
+      </user>
+    </country>
+  </continent>
+  <continent name="North America">
+    <country name="United States">
+      <user>
+        <first_name>Julia</first_name>
+        <last_name>Johnson</last_name>
+        <address>300 Boylston Ave E</address>
+        <city>Seattle</city>
+        <email>julia.johnson@gmail.com</email>
+        <password>49dksSSe3</password>
+      </user>
+      <user>
+        <first_name>Ranko</first_name>
+        <last_name>Rankovic</last_name>
+        <address>Lijesce</address>
+        <city>Brod</city>
+        <country>United States</country>
+        <email>bramit@hotmail.com</email>
+        <password>dadsfe34r</password>
+      </user>
+      <user>
+        <first_name>Ranko</first_name>
+        <last_name>Rankovic</last_name>
+        <address>Lijesce 296</address>
+        <city>Brod</city>
+        <country>United States</country>
+        <email>bramit@hotmail.com</email>
+        <password>dadsfe34r</password>
+      </user>
+      <user>
+        <first_name>Nikola</first_name>
+        <last_name>Petkovic</last_name>
+        <address>Frana Supila</address>
+        <city>Banjaluka</city>
+        <country>United States</country>
+        <email>petkovic@gmail.com</email>
+        <password>pass33467</password>
+      </user>
+      <user>
+        <first_name>Nikola</first_name>
+        <last_name>Petkovic</last_name>
+        <address>Frana Supila</address>
+        <city>Banjaluka</city>
+        <country>United States</country>
+        <email>petkovic@gmail.com</email>
+        <password>pass33467</password>
+      </user>
+      <user>
+        <first_name>Nikola</first_name>
+        <last_name>Petkovic</last_name>
+        <address>Frana Supila</address>
+        <city>Banjaluka</city>
+        <country>United States</country>
+        <email>petkovic@gmail.com</email>
+        <password>pass33467</password>
+      </user>
+    </country>
+  </continent>
 </data>

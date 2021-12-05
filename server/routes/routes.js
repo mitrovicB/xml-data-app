@@ -9,6 +9,7 @@ const continentObj = {
 };
 
 module.exports = app => {
+    let users;
     // Create a User
     app.post("/register", (req, res) => {
         // Create User
@@ -35,52 +36,85 @@ module.exports = app => {
         for(continent in continentObj) {
             if(continentObj.hasOwnProperty(continent)) {
                 let countryArr = continentObj[continent];
-                console.log("continent: ", continent + "country array: ", countryArr)
+                console.log("continent:", continent + " " + "country array:", countryArr)
                 countryArr.forEach(el => {
                     if (newUser.country === el) {
                         userContinent = continent;
                         console.log("user continent:", userContinent);
-                        
                     }
                 });
             }
         }
         fs.readFile('./data.xml', 'utf8', function(err, data) {
-            parseString(data, function (err, result) {
-            const json = JSON.stringify(result, null, 4);
-            const el = JSON.parse(json);
-            const continents = el.data.continent;
-            console.log(continents);
-            continents.forEach(continent => {
-                console.log("continent name: ", continent.$.name);
-                let countries = continent.country;
-                countries.forEach(country => {
-                    console.log("country name: " + country.$.name);
-                    users = country.user;
-                    users.forEach(user => {
-                        console.log(user.email);
-                        console.log(newUser.email)
-                        if (newUser.email == user.email) {
-                            return res.status(409).json({
-                                message: err || "This email address is already in use." })
-                        } else {
+            parseString(data, (err, result) => {
+                console.log(result)
+                if (err) {
+                    throw err;
+                }
+               // const json = JSON.stringify(result, null, 4);
+                //const el = JSON.parse(json);
+                const continents = result.data.continent;
+                console.log("data continents:,", continents);
+                continents.forEach(continent => {
+                    console.log("continent name: ", continent.$.name);
+                    if (userContinent !== continent.$.name) {
+                        console.log(continent.$.name + " vs"  + userContinent);
+                        console.log('create user continent HERE');
+                        return;
+                    }
+                    let countries = continent.country;
+                    countries.forEach(country => {
+                        console.log("country name: " + country.$.name);
+                        console.log("countries:");
+                        users = country.user;
+                        console.log(users);
+                        users.forEach(user => {
+                            if (newUser.email == user.email) {
+                                return res.status(409).json({
+                                    message: err || "This email address is already in use." 
+                                });
+                            }
+                            // console.log(user.email);
+                            // console.log(newUser.email);
+                            // email check
                             if (newUser.country === country.$.name) {
                                 console.log("new user goes here:", country.$.name);
-                                country.user.push(newUser);
-                                console.log(country);
+                                country.$.name = newUser.country;
+                                console.log(country.$.name)
+                                users.push(newUser);
+                                console.log("new user:", users)
                                 return;
                             } else {
-                                console.log(continent.$.name);
-                                console.log('create user continent: ', userContinent)
-                                return;
+                                console.log('create new country');
                             }
-                        }
+                        });
                     });
+                });
+               // print JSON object
+                console.log(JSON.stringify(result, null, 4));
+            
+              // convert JSON object to XML
+                const builder = new xml2js.Builder();
+                const xml = builder.buildObject(result);
+                console.log(xml)
+
+                 // write updated XML string to a file
+                fs.writeFile('./data.xml', xml, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                console.log(`Updated XML is written to a new file.`);
                 });
             });
         });
-        });
-      // write File
+       
+        /* write updated XML string to a file
+        fs.writeFile('./data.xml', xml,  (err) => {
+            if (err) {
+                throw err;
+            }
+            console.log(`Updated XML is written to a new file.`);
+        });*/
     });
 
     // Get all users
@@ -106,7 +140,6 @@ module.exports = app => {
                         ' Address ' + user.address + ' City ' + user.city + 'Country ' + user.country + ' Email ' + user.email +
                         ' Password ' + user.password);
                         console.log('\n');
-
                         allUsers.push(user);
                     });
                 });
