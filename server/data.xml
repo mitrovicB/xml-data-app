@@ -40,51 +40,6 @@
         <email>julia.johnson@gmail.com</email>
         <password>49dksSSe3</password>
       </user>
-      <user>
-        <first_name>Ranko</first_name>
-        <last_name>Rankovic</last_name>
-        <address>Lijesce</address>
-        <city>Brod</city>
-        <country>United States</country>
-        <email>bramit@hotmail.com</email>
-        <password>dadsfe34r</password>
-      </user>
-      <user>
-        <first_name>Ranko</first_name>
-        <last_name>Rankovic</last_name>
-        <address>Lijesce 296</address>
-        <city>Brod</city>
-        <country>United States</country>
-        <email>bramit@hotmail.com</email>
-        <password>dadsfe34r</password>
-      </user>
-      <user>
-        <first_name>Nikola</first_name>
-        <last_name>Petkovic</last_name>
-        <address>Frana Supila</address>
-        <city>Banjaluka</city>
-        <country>United States</country>
-        <email>petkovic@gmail.com</email>
-        <password>pass33467</password>
-      </user>
-      <user>
-        <first_name>Nikola</first_name>
-        <last_name>Petkovic</last_name>
-        <address>Frana Supila</address>
-        <city>Banjaluka</city>
-        <country>United States</country>
-        <email>petkovic@gmail.com</email>
-        <password>pass33467</password>
-      </user>
-      <user>
-        <first_name>Nikola</first_name>
-        <last_name>Petkovic</last_name>
-        <address>Frana Supila</address>
-        <city>Banjaluka</city>
-        <country>United States</country>
-        <email>petkovic@gmail.com</email>
-        <password>pass33467</password>
-      </user>
     </country>
   </continent>
 </data>

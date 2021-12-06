@@ -8,8 +8,18 @@ const continentObj = {
     "East Asia": ["China", "Japan"]
 };
 
+function checkIfExists(arr, newdata) {
+    if (arr.some(el => el.$.name === newdata)) {
+        console.log("Object found inside the array:", newdata);
+        return true;
+    } else {
+        console.log("Object not found.");
+        return false;
+    }
+}
+
 module.exports = app => {
-    let users;
+    let allUsers;
     // Create a User
     app.post("/register", (req, res) => {
         // Create User
@@ -18,11 +28,13 @@ module.exports = app => {
             last_name: req.body.last_name,
             address: req.body.address,
             city: req.body.city,
-            country: req.body.country,
             email: req.body.email,
             password : req.body.password
         };
-        console.log(newUser);
+
+        const newElements = {
+            country: req.body.country
+        }
           /* for (let [key, value] of Object. entries(user)) {
                 if(value === '') {
                     res.status(400).send({
@@ -36,85 +48,71 @@ module.exports = app => {
         for(continent in continentObj) {
             if(continentObj.hasOwnProperty(continent)) {
                 let countryArr = continentObj[continent];
-                console.log("continent:", continent + " " + "country array:", countryArr)
                 countryArr.forEach(el => {
-                    if (newUser.country === el) {
+                    if (newElements.country === el) {
                         userContinent = continent;
-                        console.log("user continent:", userContinent);
+                        newElements["continent"] = userContinent;
                     }
                 });
             }
         }
+
+        console.log(newUser);
+        console.log(newElements);
+
         fs.readFile('./data.xml', 'utf8', function(err, data) {
             parseString(data, (err, result) => {
-                console.log(result)
                 if (err) {
                     throw err;
                 }
-               // const json = JSON.stringify(result, null, 4);
-                //const el = JSON.parse(json);
-                const continents = result.data.continent;
-                console.log("data continents:,", continents);
-                continents.forEach(continent => {
-                    console.log("continent name: ", continent.$.name);
-                    if (userContinent !== continent.$.name) {
-                        console.log(continent.$.name + " vs"  + userContinent);
-                        console.log('create user continent HERE');
-                        return;
-                    }
-                    let countries = continent.country;
-                    countries.forEach(country => {
-                        console.log("country name: " + country.$.name);
-                        console.log("countries:");
-                        users = country.user;
-                        console.log(users);
-                        users.forEach(user => {
-                            if (newUser.email == user.email) {
-                                return res.status(409).json({
-                                    message: err || "This email address is already in use." 
-                                });
-                            }
-                            // console.log(user.email);
-                            // console.log(newUser.email);
-                            // email check
-                            if (newUser.country === country.$.name) {
-                                console.log("new user goes here:", country.$.name);
-                                country.$.name = newUser.country;
-                                console.log(country.$.name)
-                                users.push(newUser);
-                                console.log("new user:", users)
-                                return;
-                            } else {
-                                console.log('create new country');
-                            }
-                        });
+
+                let continents = result.data.continent;
+                console.log("data continents:", continents);
+
+                let checkContinent = checkIfExists(continents, userContinent);
+                console.log(checkContinent);
+                if (!checkContinent) {
+                    console.log('create new continent');
+                    continents.push({
+                        '$': { name: userContinent },
+                        country: [{
+                            '$': { name: newElements.country },
+                            user: [newUser]
+                        }]
                     });
-                });
-               // print JSON object
+                } else {
+                    continents.forEach(continent => {
+                        let country = continent.country;
+                        console.log('country:', country);
+                        let countryCheck = checkIfExists(country, newElements.country);
+                        console.log(countryCheck);
+                        if (!countryCheck) {
+                            console.log(' create new country ');
+                            country.push({
+                                '$': { name: newElements.country },
+                                user: [newUser]
+                            });
+                        }
+                    });
+                }
+
+                // print JSON object
                 console.log(JSON.stringify(result, null, 4));
-            
-              // convert JSON object to XML
+                    
+                // convert JSON object to XML
                 const builder = new xml2js.Builder();
                 const xml = builder.buildObject(result);
-                console.log(xml)
+                console.log(xml);
 
-                 // write updated XML string to a file
-                fs.writeFile('./data.xml', xml, (err) => {
+                // write updated XML string to a file
+               fs.writeFile('./data.xml', xml, (err) => {
                     if (err) {
                         throw err;
                     }
-                console.log(`Updated XML is written to a new file.`);
-                });
+                console.log(`Updated XML is written to a new file.`)
+                }); 
             });
         });
-       
-        /* write updated XML string to a file
-        fs.writeFile('./data.xml', xml,  (err) => {
-            if (err) {
-                throw err;
-            }
-            console.log(`Updated XML is written to a new file.`);
-        });*/
     });
 
     // Get all users

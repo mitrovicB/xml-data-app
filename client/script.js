@@ -4,7 +4,7 @@ registerBtn.addEventListener('click', () => {
   }
 );
 
-loadXMLDoc(getUsers, "GET", "users");
+// loadXMLDoc(getUsers, "GET", "users");
 
 function deleteUser(user) {
   let userId = user.parentNode.id
