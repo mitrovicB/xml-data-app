@@ -1,6 +1,3 @@
-const { count } = require('console');
-const { userInfo } = require('os');
-
 const fs = require('fs'),
     xml2js = require('xml2js'),
     parseString = xml2js.parseString;
@@ -144,11 +141,33 @@ module.exports = app => {
     });
 
     // Delete selected user
-    app.delete('/remove', (req, res) => {
-        console.log('delete function');
-        // `for...of` loop
-    for (const [key, value] of Object.entries(animals)) {
-        console.log(`${key}: ${value}`);
-    }
-    })
+    app.put('/users', (req, res) => {
+        let userObject = {
+            email: req.body.email
+        };
+        console.log(userObject);
+
+        fs.readFile('./data.xml', 'utf-8', function (err, data) {
+            parseString(data, (err, result) => {
+                if (err) {
+                    throw err;
+                }
+                const json = JSON.stringify(result, null, 4);
+                const el = JSON.parse(json);
+                const continents = el.data.continent;
+                console.log(continents);
+                continents.forEach(continent => {
+                    let countries = continent.country;
+                    countries.forEach(country => {
+                        let users = country.user;
+                    });
+                });
+                console.log(result)
+                // convert JSON object to XML
+                const builder = new xml2js.Builder();
+                const xml = builder.buildObject(result);
+                console.log(xml);
+            });
+        });
+    });
 }

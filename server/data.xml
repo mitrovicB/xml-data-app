@@ -28,6 +28,14 @@
         <email>mmustermann@yahoo.com</email>
         <password>kdkei44229</password>
       </user>
+      <user>
+        <first_name>Marko</first_name>
+        <last_name>Markovic</last_name>
+        <address>Lijesce 296</address>
+        <city>Brod</city>
+        <email>ddsdd2@gmail.com</email>
+        <password>123456456</password>
+      </user>
     </country>
   </continent>
   <continent name="North America">
@@ -39,6 +47,16 @@
         <city>Seattle</city>
         <email>julia.johnson@gmail.com</email>
         <password>49dksSSe3</password>
+      </user>
+    </country>
+    <country name="Canada">
+      <user>
+        <first_name>Ranko</first_name>
+        <last_name>Rankovic</last_name>
+        <address>Lijesce</address>
+        <city>sfsdfdsf</city>
+        <email>bramit@hotmail.com</email>
+        <password>dadsfe34r</password>
       </user>
     </country>
   </continent>

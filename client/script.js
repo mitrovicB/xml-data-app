@@ -1,17 +1,4 @@
-const registerBtn = document.getElementById("register");
-registerBtn.addEventListener('click', () => {
-  saveUserInfo();
-  }
-);
-
 loadXMLDoc(getUsers, "GET", "users");
-
-function deleteUser(user) {
-  let userId = user.parentNode.id
-  console.log('delete user:', userId);
-  console.log(JSON.stringify(userId));
-  let xhttp = new XMLHttpRequest();
-  }
 
 function showError(msg) {
   //let errorDiv = document.getElementById('error');
@@ -19,17 +6,15 @@ function showError(msg) {
 }
 
 function saveUserInfo() {
-
-let userInfo = {
-  first_name: document.querySelector('[name="first_name"]').value,
-  last_name: document.querySelector('[name="last_name"]').value,
-  address: document.querySelector('[name="address"]').value,
-  city: document.querySelector('[name="city"]').value,
-  country: document.querySelector('[name="countries"]').value,
-  email: document.querySelector('[name="email"]').value,
-  password: document.querySelector('[name="password"]').value
-};
-
+  let userInfo = {
+    first_name: document.querySelector('[name="first_name"]').value,
+    last_name: document.querySelector('[name="last_name"]').value,
+    address: document.querySelector('[name="address"]').value,
+    city: document.querySelector('[name="city"]').value,
+    country: document.querySelector('[name="countries"]').value,
+    email: document.querySelector('[name="email"]').value,
+    password: document.querySelector('[name="password"]').value
+  };
   console.log(userInfo);
 
   // test email format https://ui.dev/validate-email-address-javascript/
@@ -67,7 +52,7 @@ let userInfo = {
   xhttp.send(JSON.stringify(userInfo));
 }
 
-function loadXMLDoc(callback) {
+function loadXMLDoc(callback, method, path) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     console.log(this.readyState,this.status);
@@ -76,29 +61,88 @@ function loadXMLDoc(callback) {
         callback(this);
       }
   };
-  xhttp.open("GET", "http://127.0.0.1:3000/users", true);
+  xhttp.open(method, "http://127.0.0.1:3000/" + path, true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send();
 }
 
 function getUsers(xml) {
   let i, data;
+  let newArr = [];
   data = JSON.parse(xml.responseText);
-  console.log(data);
-  let numberId = 1;
-  data.forEach(user => {
-  let table = document.querySelector("tbody");
-  let userId = 'user' + numberId++;
-  table.innerHTML += `
-    <tr id=${userId}>
-      <td>${user.first_name[0]}</td>
-      <td>${user.address[0]}</td>
-      <td>${user.city[0]}</td>
-      <td>${user.country}</td>
-      <td>${user.email[0]}</td>
-      <td><button type="submit" id="delete-btn" onclick='deleteUser(this.parentNode)'>delete</button></td>
-    </tr>
-    `
-  console.log(userId);
+  console.log(data.length);
+  for (i = 0; i < data.length; i++) {
+    const fullName = {
+      full_name : [data[i].first_name + ' ' + data[i].last_name]
+    } 
+    newObject = Object.assign(fullName, data[i]);
+    newArr.push(newObject);
+  }
+  newArr.forEach(user => {
+    delete user.first_name;
+    delete user.last_name;
+    delete user.password;
+  })
+  const table = document.getElementById("content");
+  table.appendChild(buildTable(newArr));
+}
+
+function buildTable(data) {
+  console.log('data:', data)
+  let table = document.createElement('table');
+  table.className = 'table';
+  let thead = document.createElement('thead');
+  let tbody = document.createElement('tbody');
+  let headRow = document.createElement('tr');
+  ["Full Name", "Address", "City", "Country", "E-mail", "Action"].forEach(function(el) {
+    let th = document.createElement('th');
+    th.appendChild(document.createTextNode(el));
+    headRow.appendChild(th);
   });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+  data.forEach(function(user) {
+    let tr = document.createElement('tr');
+    // Swapping email and country object elements
+    const tmp = user.email;
+    user.email = user.country;
+    user.country = tmp;
+    for (let obj in user) {
+      let td = document.createElement('td');
+      td.appendChild(document.createTextNode(user[obj]));
+      tr.appendChild(td);
+    }
+    let button = document.createElement('button');
+    button.appendChild(document.createTextNode('delete'));
+    button.setAttribute('class', 'delete-btn');
+    button.addEventListener('click', function() {
+      console.log('clicked')
+      let selectedUserEmail = this.previousElementSibling.innerHTML;
+      console.log(selectedUserEmail);
+      deleteUser(selectedUserEmail);
+    })
+    tr.appendChild(button)
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  return table;
+}
+
+function deleteUser(email) {
+
+  let user = {
+    'email': email
+  }
+  console.log(user);
+
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    console.log(this.readyState,this.status);
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+      }
+  };
+  xhttp.open("PUT", "http://127.0.0.1:3000/users", true);
+  xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  xhttp.send(JSON.stringify(user));
 }
