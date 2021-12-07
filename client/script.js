@@ -4,13 +4,14 @@ registerBtn.addEventListener('click', () => {
   }
 );
 
-// loadXMLDoc(getUsers, "GET", "users");
+loadXMLDoc(getUsers, "GET", "users");
 
 function deleteUser(user) {
   let userId = user.parentNode.id
   console.log('delete user:', userId);
   console.log(JSON.stringify(userId));
-}
+  let xhttp = new XMLHttpRequest();
+  }
 
 function showError(msg) {
   //let errorDiv = document.getElementById('error');
@@ -18,23 +19,25 @@ function showError(msg) {
 }
 
 function saveUserInfo() {
-  let user = {
-    first_name: document.querySelector('[name="first_name"]').value,
-    last_name: document.querySelector('[name="last_name"]').value,
-    address: document.querySelector('[name="address"]').value,
-    city: document.querySelector('[name="city"]').value,
-    country: document.querySelector('[name="countries"]').value,
-    email: document.querySelector('[name="email"]').value,
-    password: document.querySelector('[name="password"]').value
-  };
-  console.log(user);
-  
+
+let userInfo = {
+  first_name: document.querySelector('[name="first_name"]').value,
+  last_name: document.querySelector('[name="last_name"]').value,
+  address: document.querySelector('[name="address"]').value,
+  city: document.querySelector('[name="city"]').value,
+  country: document.querySelector('[name="countries"]').value,
+  email: document.querySelector('[name="email"]').value,
+  password: document.querySelector('[name="password"]').value
+};
+
+  console.log(userInfo);
+
   // test email format https://ui.dev/validate-email-address-javascript/
-  if (! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email)) {
+  if (! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userInfo.email)) {
     showError("Invalid email format!");
     return;
   }
-  if (user.password.length < 8) {
+  if (userInfo.password.length < 8) {
       showError("Password must be at least 8 characters long!");
       return;
   }
@@ -61,7 +64,7 @@ function saveUserInfo() {
   };
   xhttp.open("POST", "http://127.0.0.1:3000/register", true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  xhttp.send(JSON.stringify(user));
+  xhttp.send(JSON.stringify(userInfo));
 }
 
 function loadXMLDoc(callback) {

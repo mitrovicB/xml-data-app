@@ -1,3 +1,6 @@
+const { count } = require('console');
+const { userInfo } = require('os');
+
 const fs = require('fs'),
     xml2js = require('xml2js'),
     parseString = xml2js.parseString;
@@ -8,18 +11,7 @@ const continentObj = {
     "East Asia": ["China", "Japan"]
 };
 
-function checkIfExists(arr, newdata) {
-    if (arr.some(el => el.$.name === newdata)) {
-        console.log("Object found inside the array:", newdata);
-        return true;
-    } else {
-        console.log("Object not found.");
-        return false;
-    }
-}
-
 module.exports = app => {
-    let allUsers;
     // Create a User
     app.post("/register", (req, res) => {
         // Create User
@@ -32,18 +24,19 @@ module.exports = app => {
             password : req.body.password
         };
 
-        const newElements = {
-            country: req.body.country
-        }
-          /* for (let [key, value] of Object. entries(user)) {
-                if(value === '') {
-                    res.status(400).send({
-                        message: "Content can not be empty!"
-                    });
-                    return;
-                }
-            } */
+        // Make sure all fields are filled
+        for (let [key, value] of Object. entries(newUser)) {
+            if(value === '') {
+                res.status(400).send({
+                    message: "Content can not be empty!"
+                });
+                return;
+            }
+        } 
 
+        const newElements = {
+            country: req.body.country,
+        }
         let userContinent;
         for(continent in continentObj) {
             if(continentObj.hasOwnProperty(continent)) {
@@ -51,14 +44,12 @@ module.exports = app => {
                 countryArr.forEach(el => {
                     if (newElements.country === el) {
                         userContinent = continent;
-                        newElements["continent"] = userContinent;
+                        newElements['continent'] = continent;
                     }
                 });
             }
         }
-
         console.log(newUser);
-        console.log(newElements);
 
         fs.readFile('./data.xml', 'utf8', function(err, data) {
             parseString(data, (err, result) => {
@@ -69,31 +60,35 @@ module.exports = app => {
                 let continents = result.data.continent;
                 console.log("data continents:", continents);
 
-                let checkContinent = checkIfExists(continents, userContinent);
-                console.log(checkContinent);
-                if (!checkContinent) {
-                    console.log('create new continent');
+                let continent = continents.find(continent => continent.$.name === userContinent);
+                console.log(continent);
+
+                if (continent === undefined) {
                     continents.push({
-                        '$': { name: userContinent },
+                        '$':    { name: userContinent },
                         country: [{
                             '$': { name: newElements.country },
                             user: [newUser]
                         }]
                     });
                 } else {
-                    continents.forEach(continent => {
-                        let country = continent.country;
-                        console.log('country:', country);
-                        let countryCheck = checkIfExists(country, newElements.country);
-                        console.log(countryCheck);
-                        if (!countryCheck) {
-                            console.log(' create new country ');
-                            country.push({
-                                '$': { name: newElements.country },
-                                user: [newUser]
-                            });
-                        }
-                    });
+                    let countries = continent.country;
+                    console.log('countries: ' + countries);
+                    
+                    let countryFound = countries.find(country => country.$.name === newElements.country);
+                    console.log('country found: ' + countryFound);
+
+                    if (countryFound == undefined) {
+                        countries.push({
+                            '$': { name: newElements.country },
+                            user: [newUser]
+                        });
+
+                    } else if ( countryFound.$.name == newElements.country) {
+                        console.log('add only user');
+                        userArr = countryFound.user;
+                        userArr.push(newUser);
+                    }
                 }
 
                 // print JSON object
@@ -105,11 +100,11 @@ module.exports = app => {
                 console.log(xml);
 
                 // write updated XML string to a file
-               fs.writeFile('./data.xml', xml, (err) => {
+                fs.writeFile('./data.xml', xml, (err) => {
                     if (err) {
                         throw err;
                     }
-                console.log(`Updated XML is written to a new file.`)
+                console.log(`Updated XML is written to a new file.`);
                 }); 
             });
         });
@@ -151,5 +146,9 @@ module.exports = app => {
     // Delete selected user
     app.delete('/remove', (req, res) => {
         console.log('delete function');
+        // `for...of` loop
+    for (const [key, value] of Object.entries(animals)) {
+        console.log(`${key}: ${value}`);
+    }
     })
 }
