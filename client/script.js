@@ -1,5 +1,11 @@
 loadXMLDoc(getUsers, "GET", "users");
 
+const registerBtn = document.getElementById("register");
+registerBtn.addEventListener('click', () => {
+    saveUserInfo();
+  }
+);
+
 function showError(msg) {
   //let errorDiv = document.getElementById('error');
   console.log(msg);
@@ -70,7 +76,7 @@ function getUsers(xml) {
   let i, data;
   let newArr = [];
   data = JSON.parse(xml.responseText);
-  console.log(data.length);
+
   for (i = 0; i < data.length; i++) {
     const fullName = {
       full_name : [data[i].first_name + ' ' + data[i].last_name]
@@ -78,11 +84,12 @@ function getUsers(xml) {
     newObject = Object.assign(fullName, data[i]);
     newArr.push(newObject);
   }
+  
   newArr.forEach(user => {
     delete user.first_name;
     delete user.last_name;
     delete user.password;
-  })
+  });
   const table = document.getElementById("content");
   table.appendChild(buildTable(newArr));
 }
@@ -129,7 +136,6 @@ function buildTable(data) {
 }
 
 function deleteUser(email) {
-
   let user = {
     'email': email
   }
@@ -142,7 +148,7 @@ function deleteUser(email) {
         console.log(this.responseText);
       }
   };
-  xhttp.open("PUT", "http://127.0.0.1:3000/users", true);
+  xhttp.open("PUT", "http://127.0.0.1:3000/delete", true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify(user));
 }
