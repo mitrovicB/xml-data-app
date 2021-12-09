@@ -46,3 +46,11 @@ td {
   border: none;
   background: none;
 }
+
+#error {
+  display: none;
+  border: 1px solid red;
+  width: 100%;
+  margin-bottom: 0.5em;
+  padding: 0.5em;
+}
