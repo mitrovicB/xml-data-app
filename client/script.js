@@ -1,3 +1,6 @@
+const api_server = API_URL + ":" + API_PORT;
+console.log(api_server);
+
 const registerBtn = document.getElementById("register");
 registerBtn.addEventListener('click', () => { saveUserData(); });
 const errorDiv = document.getElementById('error');
@@ -12,18 +15,17 @@ function hideError() {
   errorDiv.style.display = "none";
 }
 
-loadXMLDoc(getUsers, "GET", "users");
+loadXMLDoc(getUsers);
 
 function loadXMLDoc(callback) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-    console.log(this.readyState,this.status);
       if (this.readyState == 4 && this.status == 200) {
         console.log(this.responseText);
         callback(this);
       }
   };
-  xhttp.open("GET", "http://127.0.0.1:3000/users", true);
+  xhttp.open("GET", api_server + "/users", true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send();
 }
@@ -105,7 +107,6 @@ function saveUserData() {
     email: document.querySelector('[name="email"]').value,
     password: document.querySelector('[name="password"]').value
   };
-  console.log(userData);
 
   // test email format https://ui.dev/validate-email-address-javascript/
   if (! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
@@ -117,6 +118,7 @@ function saveUserData() {
       showError("Password must be at least 8 characters long!");
       return;
   }
+
   hideError();
   
   const xhttp = new XMLHttpRequest();
@@ -126,6 +128,10 @@ function saveUserData() {
       switch (this.status) {
         case 200:
           console.log(xhttp.responseText);
+          if (xhttp.responseText) {
+            console.log('user created');
+            location.reload();
+          }
           break;
         case 401:
           showError(res.message);
@@ -140,24 +146,27 @@ function saveUserData() {
     }
   }
 
-  xhttp.open("POST", "http://127.0.0.1:3000/register", true);
+  xhttp.open("POST", api_server + "/register", true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify(userData));
 }
 
-function deleteUser(email) {
+async function deleteUser(email) {
   let user = {
-    'email': email
+    "email": email
   }
 
   const xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-    console.log(this.readyState,this.status);
       if (this.readyState == 4 && this.status == 200) {
         console.log(this.responseText);
-      }
-  };
-  xhttp.open("PUT", "http://127.0.0.1:3000/delete", true);
+        if (this.responseText) {
+          console.log('user deleted');
+          location.reload();
+        }
+      } 
+  }
+  xhttp.open("PUT", api_server + "/delete", true);
   xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   xhttp.send(JSON.stringify(user));
 }
